@@ -120,6 +120,8 @@ if (offerGrid) {
 
   let isDragging = false;
   let lastX = 0;
+  let lastPointerTime = 0;
+  let inertiaVelocity = 0;
   let position = 0;
   let loopWidth = 0;
   let lastTimestamp = performance.now();
@@ -136,7 +138,13 @@ if (offerGrid) {
     const elapsed = Math.min(timestamp - lastTimestamp, 100);
     lastTimestamp = timestamp;
     if (!isDragging) {
-      position -= carouselSpeed * elapsed / 1000;
+      if (Math.abs(inertiaVelocity) > 1) {
+        position += inertiaVelocity * elapsed / 1000;
+        inertiaVelocity *= Math.pow(0.001, elapsed / 1000);
+      } else {
+        inertiaVelocity = 0;
+        position -= carouselSpeed * elapsed / 1000;
+      }
       wrapPosition();
       renderPosition();
     }
@@ -145,14 +153,21 @@ if (offerGrid) {
   offerGrid.addEventListener("pointerdown", (event) => {
     isDragging = true;
     lastX = event.clientX;
+    lastPointerTime = performance.now();
+    inertiaVelocity = 0;
     offerGrid.classList.add("is-dragging");
     offerGrid.setPointerCapture(event.pointerId);
   });
   offerGrid.addEventListener("pointermove", (event) => {
     if (!isDragging) return;
     event.preventDefault();
-    position += event.clientX - lastX;
+    const now = performance.now();
+    const movement = event.clientX - lastX;
+    const elapsed = Math.max(now - lastPointerTime, 1);
+    inertiaVelocity = (movement / elapsed) * 1000;
+    position += movement;
     lastX = event.clientX;
+    lastPointerTime = now;
     wrapPosition();
     renderPosition();
   });
