@@ -123,7 +123,7 @@ if (offerGrid) {
   let position = 0;
   let loopWidth = 0;
   let lastTimestamp = performance.now();
-  const carouselSpeed = 27;
+  const carouselSpeed = 55;
   const wrapPosition = () => {
     if (position <= -loopWidth) position += loopWidth;
     if (position > 0) position -= loopWidth;

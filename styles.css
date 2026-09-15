@@ -12,7 +12,7 @@
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; overflow-x: hidden; }
+html { scroll-behavior: smooth; overflow-x: hidden; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
 body { margin: 0; overflow-x: hidden; background: var(--paper); color: var(--ink); font-family: var(--body); position: relative; }
 button, a { font: inherit; }
 a { color: inherit; text-decoration: none; }
@@ -162,7 +162,7 @@ h2 { font-size: clamp(40px, 5vw, 64px); line-height: 1; }
   .contact-panel { align-items: stretch; flex-direction: column; padding: 32px 22px 44px; gap: 30px; }
   .contact-numbers { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
   .contact-number { padding: 14px 10px; }
-  .contact-number strong { font-size: 20px; letter-spacing: -.02em; }
+  .contact-number strong { font-size: 20px; letter-spacing: -.02em; -webkit-text-size-adjust: none; text-size-adjust: none; }
   .contact-number div { flex-direction: column; }
   .contact-number a { justify-content: center; }
   .footer { gap: 12px; flex-wrap: wrap; }
