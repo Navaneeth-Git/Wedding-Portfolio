@@ -122,7 +122,7 @@ if (offerGrid) {
   let lastX = 0;
   let position = 0;
   let loopWidth = 0;
-  let lastTimestamp = 0;
+  let lastTimestamp = performance.now();
   const carouselSpeed = 27;
   const wrapPosition = () => {
     if (position <= -loopWidth) position += loopWidth;
@@ -174,5 +174,5 @@ if (offerGrid) {
   loopWidth = offerGrid.querySelector(".offer-duplicate").offsetLeft;
   position = -loopWidth / 2;
   renderPosition();
-  animateCarousel();
+  requestAnimationFrame(animateCarousel);
 }
