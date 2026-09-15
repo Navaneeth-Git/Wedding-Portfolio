@@ -107,3 +107,67 @@ document.querySelectorAll("[data-close-preview]").forEach((element) => element.a
 previewFrame.addEventListener("load", () => { loading.hidden = true; });
 document.addEventListener("keydown", (event) => { if (event.key === "Escape" && previewModal.classList.contains("is-open")) closePreview(); });
 renderCollection("Hindu");
+
+const offerGrid = document.querySelector(".offer-grid");
+if (offerGrid) {
+  offerGrid.querySelectorAll(".offer-item").forEach((item) => {
+    const duplicate = item.cloneNode(true);
+    duplicate.classList.add("offer-duplicate");
+    duplicate.setAttribute("aria-hidden", "true");
+    duplicate.setAttribute("tabindex", "-1");
+    offerGrid.appendChild(duplicate);
+  });
+
+  let isDragging = false;
+  let lastX = 0;
+  let position = 0;
+  let loopWidth = 0;
+  const wrapPosition = () => {
+    if (position <= -loopWidth) position += loopWidth;
+    if (position > 0) position -= loopWidth;
+  };
+  const renderPosition = () => {
+    offerGrid.style.setProperty("--carousel-position", `${position}px`);
+  };
+  const animateCarousel = () => {
+    if (!isDragging) {
+      position -= 0.45;
+      wrapPosition();
+      renderPosition();
+    }
+    requestAnimationFrame(animateCarousel);
+  };
+  offerGrid.addEventListener("pointerdown", (event) => {
+    isDragging = true;
+    lastX = event.clientX;
+    offerGrid.classList.add("is-dragging");
+    offerGrid.setPointerCapture(event.pointerId);
+  });
+  offerGrid.addEventListener("pointermove", (event) => {
+    if (!isDragging) return;
+    event.preventDefault();
+    position += event.clientX - lastX;
+    lastX = event.clientX;
+    wrapPosition();
+    renderPosition();
+  });
+  offerGrid.addEventListener("wheel", (event) => {
+    const movement = Math.abs(event.deltaX) > Math.abs(event.deltaY) ? event.deltaX : event.deltaY;
+    if (!movement) return;
+    event.preventDefault();
+    position -= movement;
+    wrapPosition();
+    renderPosition();
+  }, { passive: false });
+  const stopDragging = () => {
+    isDragging = false;
+    offerGrid.classList.remove("is-dragging");
+  };
+  offerGrid.addEventListener("pointerup", stopDragging);
+  offerGrid.addEventListener("pointercancel", stopDragging);
+  offerGrid.addEventListener("pointerleave", stopDragging);
+  loopWidth = offerGrid.querySelector(".offer-duplicate").offsetLeft;
+  position = -loopWidth / 2;
+  renderPosition();
+  animateCarousel();
+}
