@@ -2,7 +2,7 @@ const collections = {
   Hindu: {
     description: "Warm, ceremonial and rooted in tradition.",
     templates: [
-      { name: "The Saffron Edit", label: "Hindu · 01", url: "https://hindu-template1-1.vercel.app/" },
+      { name: "The Saffron Edit", label: "Hindu · 01", url: "https://hindu-template1.vercel.app/" },
       { name: "Marigold", label: "Hindu · 02", url: "https://hindu-template2.vercel.app/" },
       { name: "Together", label: "Hindu · 03", url: "https://common-template1.vercel.app/" }
     ]
@@ -122,6 +122,8 @@ if (offerGrid) {
   let lastX = 0;
   let position = 0;
   let loopWidth = 0;
+  let lastTimestamp = 0;
+  const carouselSpeed = 27;
   const wrapPosition = () => {
     if (position <= -loopWidth) position += loopWidth;
     if (position > 0) position -= loopWidth;
@@ -129,9 +131,12 @@ if (offerGrid) {
   const renderPosition = () => {
     offerGrid.style.setProperty("--carousel-position", `${position}px`);
   };
-  const animateCarousel = () => {
+  const animateCarousel = (timestamp) => {
+    if (!lastTimestamp) lastTimestamp = timestamp;
+    const elapsed = Math.min(timestamp - lastTimestamp, 100);
+    lastTimestamp = timestamp;
     if (!isDragging) {
-      position -= 0.45;
+      position -= carouselSpeed * elapsed / 1000;
       wrapPosition();
       renderPosition();
     }
