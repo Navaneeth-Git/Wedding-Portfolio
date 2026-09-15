@@ -41,13 +41,13 @@ function renderCollection(category) {
     <article class="template-card" tabindex="0" data-url="${template.url}" data-name="${template.name}" style="animation-delay: ${index * 0.08}s">
       <div class="card-top"><span>${template.label}</span><span class="card-number">0${index + 1}</span></div>
       <div class="card-name">${template.name}</div>
-      <div class="view-template">View invitation <span aria-hidden="true">↗</span></div>
+      <div class="view-template">View invitation <span class="icon-arrow" aria-hidden="true"></span></div>
     </article>
   `).join("") + `
     <article class="template-card custom-card" tabindex="0" data-custom-card>
-      <div class="card-top"><span>Made for you</span><span class="card-number">✦</span></div>
+      <div class="card-top"><span>Made for you</span><span class="card-number">*</span></div>
       <div class="card-name">Fully custom</div>
-      <div class="view-template">Build yours <span aria-hidden="true">↘</span></div>
+      <div class="view-template">Build yours <span class="icon-arrow icon-arrow-down" aria-hidden="true"></span></div>
     </article>
   `;
 
